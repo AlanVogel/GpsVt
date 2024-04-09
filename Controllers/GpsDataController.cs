@@ -51,7 +51,7 @@ namespace SpeedSight.Controllers
             return Ok(data);
         }
 
-        [HttpGet("{id}/avg_speed")]
+        [HttpGet("{id}/avgSpeedByID")]
         [ProducesResponseType(200, Type = typeof(double))]
         [ProducesResponseType(400)]
         public IActionResult GetAvgSpeed(int id)
@@ -59,12 +59,12 @@ namespace SpeedSight.Controllers
             if (!_gpsDataRepository.GpsDataExists(id))
                 return NotFound();
 
-            var avg_speed = _gpsDataRepository.GetAvgSpeedForLink(id);
+            var avgSpeed = _gpsDataRepository.GetAvgSpeedForId(id);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(avg_speed);
+            return Ok(avgSpeed);
         }
 
         [HttpPost]
@@ -139,6 +139,20 @@ namespace SpeedSight.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpGet("allAvgSpeed")]
+        [ProducesResponseType(200, Type = typeof(Dictionary<int,double>))]
+        [ProducesResponseType(400)]
+        public IActionResult GetAvgSpeedAll()
+        {
+
+            var allAvgSpeed = _gpsDataRepository.GetAvgSpeedForAll();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(allAvgSpeed);
         }
     }
 }

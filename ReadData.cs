@@ -37,7 +37,7 @@ namespace SpeedSight
                                 {
                                     new GpsData
                                     {
-                                        Link = Math.Abs(int.Parse(parts[0])),
+                                        Link = int.Parse(parts[0]),
                                         Utc = int.Parse(parts[1]),
                                         Match_X = double.Parse(parts[2], System.Globalization.CultureInfo.InvariantCulture),
                                         Match_Y = double.Parse(parts[3], System.Globalization.CultureInfo.InvariantCulture),

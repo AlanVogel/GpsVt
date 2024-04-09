@@ -4,6 +4,8 @@ using SpeedSight.Data;
 using SpeedSight.Dto;
 using SpeedSight.Interfaces;
 using SpeedSight.Models;
+using SpeedSight.Repository.helper;
+using System;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SpeedSight.Repository
@@ -26,7 +28,7 @@ namespace SpeedSight.Repository
             return _context.GpsDatas.OrderBy(p => p.Id).ToList();
         }
 
-        public double GetAvgSpeedForLink(int id)
+        public double GetAvgSpeedForId(int id)
         {
             var data_id = _context.GpsDatas.Where(p => p.Id == id).FirstOrDefault();
             var data_link = _context.GpsDatas.Where(p => p.Link == data_id.Link);            
@@ -44,17 +46,20 @@ namespace SpeedSight.Repository
 
         public bool CreateGpsData(GpsData data)
         {
-            _context.Add(data);
-            return Save();
+            if (Utils.IsInRangeLink(data.Link))
+            {
+                Utils.SetUtc(data);
+                _context.Add(data);
+                return Save();
+            }
+            return false;
         }
 
         public bool UpdateGpsData(GpsData data)
         {
-            var link_validation= IsInRangeLink(data.Link);
-            if (link_validation)
+            if (Utils.IsInRangeLink(data.Link))
             {
-                TimeSpan span = DateTime.Now.Subtract(new DateTime(1970,1,1,0,0,0));
-                data.Utc = (int)(span.TotalSeconds);
+                Utils.SetUtc(data);
                 _context.Update(data);
                 return Save();
             }
@@ -73,23 +78,36 @@ namespace SpeedSight.Repository
             return saved > 0 ? true : false;
         }
 
-        public bool IsInRangeLink(int link)
+        public Dictionary<int,double> GetAvgSpeedForAll()
         {
-            var validLink = Enum.GetValues(typeof(LinkTypes)).Cast<int>().OrderBy(x => x);
-            return validLink.Contains(link);
-        }
+            Dictionary<int, Tuple<double, int>> speedByLinks = new Dictionary<int, Tuple<double, int>>();
+            var dataLinks = _context.GpsDatas.OrderBy(p => p.Id).ToList();
 
-        public enum LinkTypes 
-        {
-            Link1 = 201678,
-            Link2 = 201679,
-            Link3 = 214697,
-            Link4 = 214696,
-            Link5 = 214695,
-            Link6 = 214694,
-            Link7 = 214693,
-            Link8 = 214692,
-            Link9 = 214717,
+            foreach (var dataLink in dataLinks) 
+            {
+                if (speedByLinks.ContainsKey(dataLink.Link))
+                {
+                    var tuple = speedByLinks[dataLink.Link];
+                    double sum = tuple.Item1 + dataLink.Match_Speed;
+                    int count = tuple.Item2 + 1;
+                    speedByLinks[dataLink.Link] = Tuple.Create(sum, count);
+                }
+                else
+                    speedByLinks.Add(dataLink.Link, new Tuple<double,int>(dataLink.Match_Speed, 1));
+            }
+
+            if (speedByLinks.Count <= 0)
+                return new Dictionary<int, double> {};
+
+            Dictionary<int, double> avgSpeed = new Dictionary<int, double>();
+
+            foreach (var kv in speedByLinks)
+            {
+                double avg_speed = Math.Round(kv.Value.Item1 / kv.Value.Item2, 2);
+                avgSpeed.Add(kv.Key, avg_speed);
+            }
+
+            return avgSpeed;
         }
     }
 }
