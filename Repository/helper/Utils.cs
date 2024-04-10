@@ -3,7 +3,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SpeedSight.Repository.helper
 {
-    public class Utils
+    public static class Utils
     {
         public static GpsData SetUtc(GpsData data) 
         {

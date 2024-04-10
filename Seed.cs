@@ -1,5 +1,4 @@
 ﻿using SpeedSight.Data;
-using SpeedSight.Models;
 
 namespace SpeedSight
 {
@@ -16,12 +15,12 @@ namespace SpeedSight
             return _dataContext;
         }
 
-        public void SeedDataContext()
+        public async Task SeedDataContextAsync()
         {
             if (!_dataContext.GpsDatas.Any())
             {
                 var datacontext = GetDataContext();
-                new ReadData(new List<GpsData>(), datacontext).ReadGpsData();
+                await new ReadData(datacontext).ReadGpsDataAsync();
             }   
         }
     }

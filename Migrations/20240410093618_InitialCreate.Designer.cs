@@ -11,7 +11,7 @@ using SpeedSight.Data;
 namespace SpeedSight.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240405101733_InitialCreate")]
+    [Migration("20240410093618_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

@@ -1,12 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using SpeedSight.Data;
-using SpeedSight.Dto;
+﻿using SpeedSight.Data;
 using SpeedSight.Interfaces;
 using SpeedSight.Models;
 using SpeedSight.Repository.helper;
-using System;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SpeedSight.Repository
 {
@@ -31,6 +26,10 @@ namespace SpeedSight.Repository
         public double GetAvgSpeedForId(int id)
         {
             var data_id = _context.GpsDatas.Where(p => p.Id == id).FirstOrDefault();
+
+            if(data_id == null)
+                return 0;
+
             var data_link = _context.GpsDatas.Where(p => p.Link == data_id.Link);            
 
             if (data_link.Count() <= 0)

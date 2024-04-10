@@ -26,16 +26,16 @@ var app = builder.Build();
 // "Add-Migration InitialCreate", and then run "Update-Database"
 // then in powershell run "dotnet run seeddata" but before that set your dir to SpeedSight
 if (args.Length == 1 && args[0].ToLower() == "seeddata")
-    SeedData(app);
+    SeedDataAsync(app);
 
-void SeedData(IHost app)
+async void SeedDataAsync(IHost app)
 {
     var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
 
     using (var scope = scopedFactory.CreateScope())
     {
         var service = scope.ServiceProvider.GetService<Seed>();
-        service.SeedDataContext();
+        await service.SeedDataContextAsync();
     }
 }
 
