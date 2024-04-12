@@ -20,7 +20,7 @@ namespace SpeedSight.Repository
         }
         public ICollection<GpsData> GetGpsDatas() 
         {
-            return _context.GpsDatas.OrderBy(p => p.Id).ToList();
+            return _context.GpsDatas.Where(d => d.Id <= 10).OrderBy(p => p.Id).ToList();
         }
 
         public double GetAvgSpeedForId(int id)
