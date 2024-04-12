@@ -1,10 +1,10 @@
 # Vehicle Trajectory based on GPS data
 
-Simple ASP.NET web API template of the recorded vehicles trajectory that crossed the [Jadranski Most](https://www.google.com/maps/@45.7827184,15.9530504,18z?entry=ttu).
+Simple ASP.NET web API of the recorded vehicle's trajectory on the [Jadranski Most](https://www.google.com/maps/@45.7827184,15.9530504,18z?entry=ttu).
 
 # GPS Data Description
 Inside gps_data.txt are vehicle trajectory data based on GPS tracking in the area of Jadranski most. 
-The range of the area that is used for tracking is shown in the [figure1](#figure1), while the coordinates is shown in the [table](#table).
+The range of the area that is used for tracking is shown in the [figure1](#figure1), while the coordinates are shown in the [table](#table).
 
 <a name="figure1"></a>
 ![figure1](./Public/polygon.png)
@@ -56,15 +56,15 @@ then the direction of the movement is South-North, while a negative value indica
 
 
 - Be sure that your SQL Server is open and that you have already created your database
-- Open the appsettings.json file and sets the next line ``"DefaultConnection": <your string goes here>``
-- Inside Visual Studio open Package Manager Console and then run the next commands:
+- Open the appsettings.json file and set properly the next line ``"DefaultConnection": <your string goes here>``
+- Inside the Visual Studio open the Package Manager Console and then run the next commands:
   - ```sh
     Add-Migration InitialCreate
     ```
   - ```sh
     Update-Database
     ```
-- If everything went successful then in the powershell run the next command:
+- If everything went successful then open the powershell and run:
    - ```sh
      dotnet run seeddata
      ```
