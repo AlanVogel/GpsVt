@@ -4,10 +4,10 @@ Simple ASP.NET web API template of the recorded vehicles trajectory that crossed
 
 # GPS Data Description
 Inside gps_data.txt are vehicle trajectory data based on GPS tracking in the area of Jadranski most. 
-The range of the area that is used for tracking is shown in the [figure1](#picture1), while the coordinates is shown in the [table](#table).
+The range of the area that is used for tracking is shown in the [figure1](#figure1), while the coordinates is shown in the [table](#table).
 
-<a name="picture"></a>
-![picture1](polygon.png)
+<a name="figure1"></a>
+![figure1](./Public/polygon.png)
 
 <a name="table"></a>
 Coordinates | Longitude | Latitude 
@@ -17,8 +17,8 @@ Coordinates | Longitude | Latitude
 3           | 15.9546261| 45.788320
 4           | 15.948400 | 45.786958
 
-Each record of a new vehicle route in the file begins and ends with the sign **NEW _ ROUTE**, followed by all recorded vehicle records of the route, which are located inside the range.
-The records are time-sorted, and the attributes of each record are separated by the sign "**_;_**".
+Each record of a new vehicle route in the file begins and ends with the sign ``NEW_ROUTE``, followed by all recorded vehicle records of the route, which are located inside the range.
+The records are time-sorted, and the attributes of each record are separated by the sign ``;``.
 
 ## A Description Vehicle Attributes
 
@@ -42,5 +42,29 @@ ORG_S     | 50                 | Original speed of movement [km/h]
 The vehicle trajectory data consists of nine links. The links are shown in the [figure2](#picture2). The Link values represent the route of traffic. If the link contains a positive value, 
 then the direction of the movement is South-North, while a negative value indicates the opposite direction.
 
-<a name="picture"></a>
-![picture2](links.png)
+<a name="picture2"></a>
+![figure2](./Public/links.png)
+
+<a id="database-data injection"></a>
+
+<h2>
+  <picture>
+    <img src="./Public/database.gif?raw=true" width="45px" style="margin-right: 15px;">
+  </picture>
+  Data Injection to SQL
+</h2>
+
+
+- Be sure that your SQL Server is open and that you have already created your database
+- Open the appsettings.json file and sets the next line ``"DefaultConnection": <your string goes here>``
+- Inside Visual Studio open Package Manager Console and then run the next commands:
+  - ```sh
+    Add-Migration InitialCreate
+    ```
+  - ```sh
+    Update-Database
+    ```
+- If everything went successful then in the powershell run the next command:
+   - ```sh
+     dotnet run seeddata
+     ```
