@@ -12,11 +12,13 @@ namespace SpeedSight
             this._dataContext = context;
         }
 
-        public async Task ReadGpsDataAsync(string path = @"C:\Users\AlanV\Desktop\Leo-podaci\gps_data.txt",
+        public async Task ReadGpsDataAsync(string data_path = @"\\gps_data.txt",
                                 string new_line = "NEW_ROUTE")
         {
             try
             {
+                string dir = new DirectoryInfo(Environment.CurrentDirectory).Parent.Parent.Parent.FullName;
+                string path = Path.GetFullPath(dir + data_path);
                 var NumberOfProperties = typeof(GpsData).GetProperties().Length;
                 var batchSize = 1000;
 
